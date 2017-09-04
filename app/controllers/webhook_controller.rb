@@ -13,7 +13,7 @@ class WebhookController < ApplicationController
   def callback
     puts params # debug?
     httpclient.post_content(
-      "https://graph.facebook.com/v2.6/me/messages?access_token=#{ACCESS_TOKEN}",
+      facebook_endpoint,
       {recipient: {id: sender_id}, message: {text: inmu}}.to_json,
       'Content-Type' => 'application/json'
     )
@@ -46,5 +46,9 @@ class WebhookController < ApplicationController
 
   def httpclient
     @httpclient ||= HTTPClient.new
+  end
+
+  def facebook_endpoint
+    "https://graph.facebook.com/v2.6/me/messages?access_token=#{ACCESS_TOKEN}"
   end
 end
