@@ -12,10 +12,6 @@ class WebhookController < ApplicationController
     unless is_validate_token
       return head :unauthorized
     end
-    challenge = params['hub.challenge']
-    puts challenge
-
-    render plain: challenge if request.get?
 
     httpclient = HTTPClient.new
     httpclient.post_content(
@@ -27,8 +23,19 @@ class WebhookController < ApplicationController
     head :ok
   end
 
+  def callback_subscribe
+    unless is_validate_token && params['hub.mode'] == 'subscribe'
+      return head :unauthorized
+    end
+
+    challenge = params['hub.challenge']
+    render plain: challenge if request.get?
+
+    head :ok
+  end
+
   private
   def is_validate_token
-    params['hub.mode'] == 'subscribe' && params['hub.verify_token'] == TOKEN
+    params['hub.verify_token'] == TOKEN
   end
 end
