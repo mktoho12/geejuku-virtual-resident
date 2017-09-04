@@ -11,12 +11,7 @@ class WebhookController < ApplicationController
   ACCESS_TOKEN = ENV['FACEBOOK_ACCESS_TOKEN']
 
   def callback
-
-    request_data = JSON.parse(request.body.read, {:symbolize_names => true})
-    sender_id = request_data[:entry][0][:messaging][0][:sender][:id]
-    puts params
-
-    httpclient = HTTPClient.new
+    puts params # debug?
     httpclient.post_content(
       "https://graph.facebook.com/v2.6/me/messages?access_token=#{ACCESS_TOKEN}",
       {recipient: {id: sender_id}, message: {text: inmu}}.to_json,
@@ -39,5 +34,17 @@ class WebhookController < ApplicationController
   private
   def is_validate_token?
     params['hub.verify_token'] == TOKEN
+  end
+
+  def request_data
+    @request_data ||= JSON.parse(request.body.read, {:symbolize_names => true})
+  end
+
+  def sender_id
+    @sender_id ||= request_data[:entry][0][:messaging][0][:sender][:id]
+  end
+
+  def httpclient
+    @httpclient ||= HTTPClient.new
   end
 end
