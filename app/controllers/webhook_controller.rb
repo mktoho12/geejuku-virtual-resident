@@ -8,6 +8,7 @@ class WebhookController < ApplicationController
 
   protect_from_forgery with: :null_session # CSRF対策無効化
   TOKEN = ENV['FACEBOOK_TOKEN']
+  ACCESS_TOKEN = ENV['FACEBOOK_ACCESS_TOKEN']
 
   def callback
 
@@ -17,7 +18,7 @@ class WebhookController < ApplicationController
 
     httpclient = HTTPClient.new
     httpclient.post_content(
-      'https://graph.facebook.com/v2.6/me/messages?access_token=EAABoiBhMihsBABXpnaNQZBg1zmsiFINZB4QVZCPR3qliiEuKxeU6Ksv8BRrQN1LrC6V2g9WbMTjJyqhoI6sZAWjemFOUGLZA4JnpzmZCsUbb7v4lVrBqMYS4mWbLH0RhKwNUmzeUfbJz4hehejrNpbNvB8YCJgHeltYX0j74qFBgZDZD',
+      "https://graph.facebook.com/v2.6/me/messages?access_token=#{ACCESS_TOKEN}",
       {recipient: {id: sender_id}, message: {text: inmu}}.to_json,
       'Content-Type' => 'application/json'
     )
