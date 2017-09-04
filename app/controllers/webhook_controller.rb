@@ -11,12 +11,13 @@ class WebhookController < ApplicationController
   def callback
 
     params = JSON.parse(request.body.read, {:symbolize_names => true})
+    sender_id = params[:messaging][0][:sender][:id]
     puts params
 
     httpclient = HTTPClient.new
     httpclient.post_content(
       'https://graph.facebook.com/v2.6/me/messages?access_token=EAABoiBhMihsBABXpnaNQZBg1zmsiFINZB4QVZCPR3qliiEuKxeU6Ksv8BRrQN1LrC6V2g9WbMTjJyqhoI6sZAWjemFOUGLZA4JnpzmZCsUbb7v4lVrBqMYS4mWbLH0RhKwNUmzeUfbJz4hehejrNpbNvB8YCJgHeltYX0j74qFBgZDZD',
-      {recipient: {id: '1764875153553086'}, message: {text: 'は？'}}.to_json,
+      {recipient: {id: sender_id}, message: {text: 'は？'}}.to_json,
       'Content-Type' => 'application/json'
     )
     head :ok
