@@ -10,7 +10,7 @@ class WebhookController < ApplicationController
     challenge = params['hub.challenge']
     logger.info({from_facebook: challenge})
 
-    head :ok
+    render plain: challenge
   end
 
   private
