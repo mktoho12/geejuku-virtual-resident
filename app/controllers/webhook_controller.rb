@@ -10,7 +10,9 @@ class WebhookController < ApplicationController
     challenge = params['hub.challenge']
     puts challenge
 
-    render plain: challenge
+    render plain: challenge if request.get?
+
+    render plain: request.body
   end
 
   private
