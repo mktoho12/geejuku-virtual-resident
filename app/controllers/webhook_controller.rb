@@ -26,7 +26,7 @@ class WebhookController < ApplicationController
   end
 
   def callback_subscribe
-    unless is_validate_token && params['hub.mode'] == 'subscribe'
+    unless is_validate_token? && params['hub.mode'] == 'subscribe'
       return head :unauthorized
     end
 
@@ -37,7 +37,7 @@ class WebhookController < ApplicationController
   end
 
   private
-  def is_validate_token
+  def is_validate_token?
     params['hub.verify_token'] == TOKEN
   end
 end
