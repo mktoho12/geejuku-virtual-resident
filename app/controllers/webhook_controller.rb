@@ -8,7 +8,7 @@ class WebhookController < ApplicationController
       return head :unauthorized
     end
     challenge = params['hub.challenge']
-    logger.info({from_facebook: challenge})
+    puts challenge
 
     render plain: challenge
   end
