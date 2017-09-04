@@ -11,7 +11,7 @@ class WebhookController < ApplicationController
   def callback
 
     params = JSON.parse(request.body.read, {:symbolize_names => true})
-    sender_id = params[:messaging][0][:sender][:id]
+    sender_id = params[:entry][0][:messaging][0][:sender][:id]
     puts params
 
     httpclient = HTTPClient.new
